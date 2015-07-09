@@ -145,10 +145,18 @@ module Helpers
           action :run
         end
 
-        package "mesos" do
-          action :install
-          version "#{mesos_version}#{build_version}"
+        # package "mesos" do
+        #   action :install
+        #   version "#{mesos_version}#{build_version}"
+        # end
+        # do not install recommended pkgs
+        bash "installing mesos" do
+          code <<-EOH
+            sudo apt-get --no-install-recommends -y install mesos
+          EOH
+          action :run
         end
+
       when 'centos'
         repo_url = value_for_platform(
           'centos' => {
